@@ -51,7 +51,9 @@ Joining Form Pro is a comprehensive Odoo 17 module designed to streamline the em
 
 ## Technical Details
 
-> **Important Note**: This module is built for Odoo 17.0 which has removed support for the traditional `attrs` attribute in view definitions. Instead, we use the direct attribute syntax (e.g., `invisible="state != 'draft'"` instead of `attrs="{'invisible': [('state', 'not in', ['draft'])]}"`) throughout the views.
+> **Important Notes for Odoo 17.0**:
+> 1. This module is built for Odoo 17.0 which has removed support for the traditional `attrs` attribute in view definitions. Instead, we use the direct attribute syntax (e.g., `invisible="state != 'draft'"` instead of `attrs="{'invisible': [('state', 'not in', ['draft'])]}"`) throughout the views.
+> 2. Owl directives like `t-field` are no longer allowed directly in view arch definitions. Instead, we use computed fields and standard field elements.
 
 ### Module Structure
 ```

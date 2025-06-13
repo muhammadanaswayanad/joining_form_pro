@@ -36,11 +36,9 @@
                 <div invisible="not user_created">
                     <group string="Credentials for the new user">
                         <field name="user_id" readonly="1" options="{'no_open': True}"/>
-                        <div>
-                            <h5>Login URL: <span t-field="user_id.company_id.website"/></h5>
-                            <h5>Username: <field name="official_email" readonly="1"/></h5>
-                            <h5>Password: <field name="password" readonly="1"/></h5>
-                        </div>
+                        <field name="company_url" readonly="1" string="Login URL"/>
+                        <field name="official_email" readonly="1" string="Username"/>
+                        <field name="password" readonly="1" string="Password"/>
                     </group>
                     <p class="text-muted">Please share these credentials with the employee.</p>
                 </div>

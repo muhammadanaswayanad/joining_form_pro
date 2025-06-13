@@ -35,6 +35,7 @@ class CreateEmployeeUserWizard(models.TransientModel):
     employee_created = fields.Boolean(string='Employee Created', readonly=True)
     employee_id = fields.Many2one('hr.employee', string='Created Employee', readonly=True)
     user_id = fields.Many2one('res.users', string='Created User', readonly=True)
+    company_url = fields.Char(string='Company URL', compute='_compute_company_url')
     
     @api.onchange('joining_form_id')
     def _onchange_joining_form_id(self):
@@ -45,6 +46,15 @@ class CreateEmployeeUserWizard(models.TransientModel):
             self.personal_email = form.email_id
             self.department_id = form.department_id
             self.job_title = form.designation
+            
+    @api.depends('user_id')
+    def _compute_company_url(self):
+        """Compute the company website URL for login information."""
+        for record in self:
+            if record.user_id and record.user_id.company_id:
+                record.company_url = record.user_id.company_id.website or self.env.company.website or self.env.get('web.base.url', '')
+            else:
+                record.company_url = self.env.company.website or self.env.get('web.base.url', '')
     
     def action_create_employee(self):
         """Create employee and optionally user from joining form data."""
