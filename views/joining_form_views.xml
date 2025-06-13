@@ -58,16 +58,15 @@
                     <group>
                         <group>
                             <field name="personal_number" required="1"/>
-                            <field name="branch"/>
+                            <field name="branch_id"/>
                             <field name="email_id" required="1"/>
                             <field name="date_of_joining"/>
                             <field name="submitted_from_public" invisible="1"/>
                         </group>
                         <group>
                             <field name="department_id"/>
-                            <field name="designation" required="1"/>
-                            <field name="work_location"/>
-                            <field name="work_place"/>
+                            <field name="designation" required="1"/>                                    <field name="work_location_id"/>
+                                    <field name="work_place"/>
                         </group>
                     </group>
                     

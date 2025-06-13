@@ -11,8 +11,12 @@ class JoiningFormController(http.Controller):
     @http.route(['/joining/form'], type='http', auth='public', website=True)
     def joining_form_public(self, **kw):
         departments = request.env['hr.department'].sudo().search([])
+        branches = request.env['employee.branch'].sudo().search([])
+        work_locations = request.env['hr.work.location'].sudo().search([])
         values = {
-            'departments': departments
+            'departments': departments,
+            'branches': branches,
+            'work_locations': work_locations
         }
         return request.render("joining_form_pro.joining_form_template", values)
     
@@ -29,7 +33,7 @@ class JoiningFormController(http.Controller):
         form_vals = {
             'name': post.get('name'),
             'personal_number': post.get('personal_number'),
-            'branch': post.get('branch'),
+            'branch_id': int(post.get('branch_id')) if post.get('branch_id') else False,
             'email_id': post.get('email_id'),
             'department_id': int(post.get('department_id')) if post.get('department_id') else False,
             'designation': post.get('designation'),
@@ -58,7 +62,7 @@ class JoiningFormController(http.Controller):
             'micr_code': post.get('micr_code'),
             'aadhaar_number': post.get('aadhaar_number'),
             'pan_number': post.get('pan_number'),
-            'work_location': post.get('work_location'),
+            'work_location_id': int(post.get('work_location_id')) if post.get('work_location_id') else False,
             'work_place': post.get('work_place'),
             'edu_college_name': post.get('edu_college_name'),
             'edu_type': post.get('edu_type'),

@@ -34,8 +34,13 @@
                                             <input type="tel" name="personal_number" id="personal_number" class="form-control" required="required"/>
                                         </div>
                                         <div class="col-md-4">
-                                            <label class="form-label" for="branch">Branch</label>
-                                            <input type="text" name="branch" id="branch" class="form-control"/>
+                                            <label class="form-label" for="branch_id">Branch</label>
+                                            <select name="branch_id" id="branch_id" class="form-select">
+                                                <option value="">Select Branch</option>
+                                                <t t-foreach="branches" t-as="branch">
+                                                    <option t-att-value="branch.id"><t t-esc="branch.name"/></option>
+                                                </t>
+                                            </select>
                                         </div>
                                     </div>
                                     <div class="row mb-3">
@@ -193,20 +198,41 @@
                                         </div>
                                     </div>
                                     <div class="row mb-3 social_media_urls" style="display: none;">
-                                        <div class="col-12">
-                                            <label class="form-label">Social Media URLs</label>
+                                        <div class="col-12 mb-3">
+                                            <h5 class="border-bottom pb-2">Social Media URLs</h5>
                                         </div>
-                                        <div class="col-md-4">
-                                            <label class="form-label" for="instagram_url">Instagram</label>
-                                            <input type="url" name="instagram_url" id="instagram_url" class="form-control"/>
+                                        <div class="col-md-4 mb-3">
+                                            <div class="card">
+                                                <div class="card-body">
+                                                    <div class="d-flex align-items-center mb-2">
+                                                        <i class="fa fa-instagram text-danger me-2" style="font-size: 24px;"></i>
+                                                        <h5 class="mb-0">Instagram</h5>
+                                                    </div>
+                                                    <input type="url" name="instagram_url" id="instagram_url" class="form-control" placeholder="https://instagram.com/yourusername"/>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div class="col-md-4">
-                                            <label class="form-label" for="facebook_url">Facebook</label>
-                                            <input type="url" name="facebook_url" id="facebook_url" class="form-control"/>
+                                        <div class="col-md-4 mb-3">
+                                            <div class="card">
+                                                <div class="card-body">
+                                                    <div class="d-flex align-items-center mb-2">
+                                                        <i class="fa fa-facebook text-primary me-2" style="font-size: 24px;"></i>
+                                                        <h5 class="mb-0">Facebook</h5>
+                                                    </div>
+                                                    <input type="url" name="facebook_url" id="facebook_url" class="form-control" placeholder="https://facebook.com/yourusername"/>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div class="col-md-4">
-                                            <label class="form-label" for="linkedin_url">LinkedIn</label>
-                                            <input type="url" name="linkedin_url" id="linkedin_url" class="form-control"/>
+                                        <div class="col-md-4 mb-3">
+                                            <div class="card">
+                                                <div class="card-body">
+                                                    <div class="d-flex align-items-center mb-2">
+                                                        <i class="fa fa-linkedin text-info me-2" style="font-size: 24px;"></i>
+                                                        <h5 class="mb-0">LinkedIn</h5>
+                                                    </div>
+                                                    <input type="url" name="linkedin_url" id="linkedin_url" class="form-control" placeholder="https://linkedin.com/in/yourusername"/>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -253,8 +279,13 @@
                                 <div class="card-body">
                                     <div class="row mb-3">
                                         <div class="col-md-6">
-                                            <label class="form-label" for="work_location">Work Location (city)</label>
-                                            <input type="text" name="work_location" id="work_location" class="form-control"/>
+                                            <label class="form-label" for="work_location_id">Work Location (city)</label>
+                                            <select name="work_location_id" id="work_location_id" class="form-select">
+                                                <option value="">Select Work Location</option>
+                                                <t t-foreach="work_locations" t-as="location">
+                                                    <option t-att-value="location.id"><t t-esc="location.name"/></option>
+                                                </t>
+                                            </select>
                                         </div>
                                         <div class="col-md-6">
                                             <label class="form-label" for="work_place">Work Place (office)</label>

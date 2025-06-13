@@ -54,7 +54,7 @@ class JoiningForm(models.Model):
     # Personal Information
     name = fields.Char(string='Full Name', required=True, tracking=True)
     personal_number = fields.Char(string='Personal Number', required=True, tracking=True)
-    branch = fields.Char(string='Branch')
+    branch_id = fields.Many2one('employee.branch', string='Branch')
     email_id = fields.Char(string='Email ID', required=True, tracking=True)
     department_id = fields.Many2one('hr.department', string='Department')
     designation = fields.Char(string='Designation', required=True)
@@ -103,7 +103,7 @@ class JoiningForm(models.Model):
     micr_code = fields.Char(string='MICR Code')
     
     # Work Location
-    work_location = fields.Char(string='Work Location (city)')
+    work_location_id = fields.Many2one('hr.work.location', string='Work Location (city)')
     work_place = fields.Char(string='Work Place (office)')
     
     # Education
