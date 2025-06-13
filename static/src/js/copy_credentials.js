@@ -1,9 +1,14 @@
-odoo.define('joining_form_pro.copy_credentials', function (require) {
+odoo.define('joining_form_pro.copy_credentials', [
+    'web.core',
+    'web.FormController',
+    'underscore'
+], function (require) {
     'use strict';
 
     var core = require('web.core');
     var _t = core._t;
     var FormController = require('web.FormController');
+    var _ = require('underscore');
 
     FormController.include({
         events: _.extend({}, FormController.prototype.events, {

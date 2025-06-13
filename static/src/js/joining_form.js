@@ -1,4 +1,6 @@
-odoo.define('joining_form_pro.form', function (require) {
+odoo.define('joining_form_pro.form', [
+    'web.public.widget'
+], function (require) {
     'use strict';
     
     var publicWidget = require('web.public.widget');
