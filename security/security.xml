@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
+    <!-- Define a new security group for Joining Forms -->
+    <record id="group_joining_form_hr" model="res.groups">
+        <field name="name">Joining Forms / HR</field>
+        <field name="category_id" ref="base.module_category_human_resources_employees"/>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        <field name="comment">Users who can access and manage joining forms.</field>
+    </record>
+    
     <!-- Security rule: HR Managers have full access -->
     <record id="joining_form_rule_hr_manager" model="ir.rule">
         <field name="name">Joining Form: HR Manager Full Access</field>

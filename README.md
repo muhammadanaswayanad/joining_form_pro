@@ -39,10 +39,12 @@ Joining Form Pro is a comprehensive Odoo 17 module designed to streamline the em
 - Direct links to created employee and user records
 
 ### Security
+- Custom security group "Joining Forms / HR" for dedicated access control
 - Granular access control with record rules:
-  - HR managers have full access
+  - HR managers and Joining Forms / HR group members have full access
   - Employees can only view their own forms
   - Public users can submit but not view records
+- App icon visibility restricted to authorized users only
 - Protected sensitive information
 
 ### Portal Integration

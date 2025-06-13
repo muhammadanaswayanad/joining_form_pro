@@ -12,8 +12,8 @@
     'license': 'LGPL-3',
     'depends': ['hr', 'portal', 'mail', 'hr_recruitment', 'web'],
     'data': [
-        'security/ir.model.access.csv',
         'security/security.xml',
+        'security/ir.model.access.csv',
         'views/joining_form_views.xml',
         'views/joining_form_templates.xml',
         'views/menu_views.xml',

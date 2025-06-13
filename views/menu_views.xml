@@ -4,16 +4,19 @@
     <menuitem id="menu_joining_form_root" 
               name="Joining Forms" 
               web_icon="joining_form_pro,static/src/img/icon.png" 
-              sequence="80"/>
+              sequence="80"
+              groups="joining_form_pro.group_joining_form_hr,hr.group_hr_manager"/>
               
     <menuitem id="menu_joining_form_main" 
               name="Joining Forms"
               parent="menu_joining_form_root"
-              sequence="1"/>
+              sequence="1"
+              groups="joining_form_pro.group_joining_form_hr,hr.group_hr_manager"/>
               
     <menuitem id="menu_joining_form_submissions" 
               name="Form Submissions"
               parent="menu_joining_form_main"
               action="action_joining_form"
-              sequence="1"/>
+              sequence="1"
+              groups="joining_form_pro.group_joining_form_hr,hr.group_hr_manager"/>
 </odoo>

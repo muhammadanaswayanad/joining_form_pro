@@ -3,5 +3,7 @@ access_joining_form_user,joining.form.user,model_joining_form,base.group_user,1,
 access_joining_form_manager,joining.form.manager,model_joining_form,hr.group_hr_manager,1,1,1,1
 access_joining_form_public,joining.form.public,model_joining_form,base.group_public,0,0,1,0
 access_joining_form_portal,joining.form.portal,model_joining_form,base.group_portal,1,0,0,0
+access_joining_form_hr,joining.form.hr,model_joining_form,group_joining_form_hr,1,1,1,1
 
 access_create_employee_user_wizard_hr,create.employee.user.wizard.hr,model_create_employee_user_wizard,hr.group_hr_manager,1,1,1,1
+access_create_employee_user_wizard_joining_form_hr,create.employee.user.wizard.joining.form.hr,model_create_employee_user_wizard,group_joining_form_hr,1,1,1,1
