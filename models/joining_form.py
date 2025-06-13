@@ -202,8 +202,8 @@ class JoiningForm(models.Model):
     def action_view_employee(self):
         """Open the related employee form view"""
         self.ensure_one()
-        if not self.employee_id:
-            return
+        if not self.employee_id or not self.employee_id.exists():
+            raise UserError(_("No employee record found."))
             
         return {
             'name': _('Employee'),
@@ -217,8 +217,8 @@ class JoiningForm(models.Model):
     def action_view_user(self):
         """Open the related user form view"""
         self.ensure_one()
-        if not self.user_id:
-            return
+        if not self.user_id or not self.user_id.exists():
+            raise UserError(_("No user record found."))
             
         return {
             'name': _('User'),

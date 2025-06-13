@@ -35,17 +35,17 @@
                 </header>
                 <sheet>
                     <div class="oe_button_box" name="button_box">
+                        <field name="employee_id" invisible="1"/>
+                        <field name="user_id" invisible="1"/>
                         <button class="oe_stat_button" name="action_view_employee" type="object" icon="fa-id-card-o"
                                 invisible="not employee_id">
                             <div class="o_stat_info">
-                                <field name="employee_id" invisible="1"/>
                                 <span class="o_stat_text">Employee</span>
                             </div>
                         </button>
                         <button class="oe_stat_button" name="action_view_user" type="object" icon="fa-user"
                                 invisible="not user_id">
                             <div class="o_stat_info">
-                                <field name="user_id" invisible="1"/>
                                 <span class="o_stat_text">User</span>
                             </div>
                         </button>

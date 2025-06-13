@@ -115,11 +115,16 @@ class CreateEmployeeUserWizard(models.TransientModel):
             self.user_id = user.id
         
         # Update the joining form
-        joining_form.write({
+        update_vals = {
             'employee_id': employee.id,
-            'user_id': self.user_id.id if self.user_id else False,
             'state': 'employee_created',
-        })
+        }
+        
+        # Only update user_id if a user was created
+        if self.user_created and self.user_id:
+            update_vals['user_id'] = self.user_id.id
+            
+        joining_form.write(update_vals)
         
         # Return view with results
         return {
