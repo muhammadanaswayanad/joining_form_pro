@@ -40,8 +40,53 @@
                                     }
                                 }
                                 
+                                // Handle marital status changes
+                                function handleMaritalStatus() {
+                                    var maritalStatus = document.getElementById('marital_status').value;
+                                    var spouseFields = document.querySelectorAll('.spouse_field');
+                                    
+                                    console.log("Marital status changed to: ", maritalStatus);
+                                    console.log("Found spouse fields: ", spouseFields.length);
+                                    
+                                    if (maritalStatus === 'married') {
+                                        spouseFields.forEach(function(field) {
+                                            field.style.display = 'block';
+                                            console.log("Showing spouse field: ", field);
+                                        });
+                                    } else {
+                                        spouseFields.forEach(function(field) {
+                                            field.style.display = 'none';
+                                        });
+                                        // Reset spouse fields
+                                        if (document.getElementById('spouse_name')) {
+                                            document.getElementById('spouse_name').value = '';
+                                        }
+                                        if (document.getElementById('children_count')) {
+                                            document.getElementById('children_count').value = '0';
+                                        }
+                                    }
+                                }
+                                
                                 document.addEventListener('DOMContentLoaded', function() {
+                                    // Initialize handling for social media and marital status
                                     toggleSocialMediaUrls();
+                                    handleMaritalStatus();  // Initialize with current value
+                                    
+                                    // Setup event listener for marital status
+                                    document.getElementById('marital_status').addEventListener('change', handleMaritalStatus);
+                                    
+                                    // Ensure children_count is always a valid number
+                                    var childrenCount = document.getElementById('children_count');
+                                    if (childrenCount) {
+                                        childrenCount.addEventListener('blur', function() {
+                                            if (this.value === '' || isNaN(parseInt(this.value))) {
+                                                this.value = '0';
+                                            }
+                                        });
+                                    }
+                                    
+                                    console.log("DOM fully loaded and parsed");
+                                    console.log("Marital status: ", document.getElementById('marital_status').value);
                                 });
                             </script>
                             <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
@@ -129,7 +174,7 @@
                                     <div class="row mb-3">
                                         <div class="col-md-4">
                                             <label class="form-label" for="marital_status">Marital Status</label>
-                                            <select name="marital_status" id="marital_status" class="form-select">
+                                            <select name="marital_status" id="marital_status" class="form-select" onchange="handleMaritalStatus()">
                                                 <option value="">Select Status</option>
                                                 <option value="single">Single</option>
                                                 <option value="married">Married</option>
@@ -137,13 +182,13 @@
                                                 <option value="widowed">Widowed</option>
                                             </select>
                                         </div>
-                                        <div class="col-md-4 spouse_field" style="display: none;">
+                                        <div class="col-md-4 spouse_field" id="spouse_name_container">
                                             <label class="form-label" for="spouse_name">Name Of Spouse</label>
                                             <input type="text" name="spouse_name" id="spouse_name" class="form-control"/>
                                         </div>
-                                        <div class="col-md-4 spouse_field" style="display: none;">
+                                        <div class="col-md-4 spouse_field" id="children_count_container">
                                             <label class="form-label" for="children_count">Number of Children</label>
-                                            <input type="number" name="children_count" id="children_count" class="form-control" value="0" min="0"/>
+                                            <input type="number" name="children_count" id="children_count" class="form-control" value="0" min="0" oninput="this.value = this.value ? Math.abs(parseInt(this.value)) || 0 : 0"/>
                                         </div>
                                     </div>
                                     <div class="row mb-3">

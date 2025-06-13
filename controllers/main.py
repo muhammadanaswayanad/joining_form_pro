@@ -43,7 +43,7 @@ class JoiningFormController(http.Controller):
             'date_of_birth': post.get('date_of_birth') or False,
             'marital_status': post.get('marital_status'),
             'spouse_name': post.get('spouse_name'),
-            'children_count': int(post.get('children_count', '0')),
+            'children_count': int(post.get('children_count', '0') or '0'),
             'pf_uan_number': post.get('pf_uan_number'),
             'esi_ip_number': post.get('esi_ip_number'),
             'blood_group': post.get('blood_group'),

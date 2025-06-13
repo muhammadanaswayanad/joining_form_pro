@@ -24,6 +24,16 @@
     box-shadow: 0 0 0 0.2rem rgba(124, 123, 173, 0.25);
 }
 
+/* Spouse Fields */
+.spouse_field {
+    display: none;
+}
+
+/* Make spouse fields visible by default when married is selected */
+#marital_status[value="married"] ~ .spouse_field {
+    display: block;
+}
+
 /* Responsive adjustments */
 @media (max-width: 768px) {
     .col-md-4, .col-md-6 {

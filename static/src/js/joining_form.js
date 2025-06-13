@@ -15,8 +15,14 @@ odoo.define('joining_form_pro.form', function (require) {
          */
         start: function () {
             var def = this._super.apply(this, arguments);
-            this._onChangeMaritalStatus();
-            this._onChangeSocialMedia();
+            
+            // Add a slight delay to ensure the DOM has fully loaded
+            setTimeout(() => {
+                this._onChangeMaritalStatus();
+                this._onChangeSocialMedia();
+                console.log("Widget initialized marital status and social media");
+            }, 200);
+            
             return def;
         },
         
@@ -32,6 +38,9 @@ odoo.define('joining_form_pro.form', function (require) {
                 spouseFields.show();
             } else {
                 spouseFields.hide();
+                // Reset spouse fields when not married
+                this.$('#spouse_name').val('');
+                this.$('#children_count').val('0');
             }
         },
         
