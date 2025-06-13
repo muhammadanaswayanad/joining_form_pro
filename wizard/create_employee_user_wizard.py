@@ -37,6 +37,16 @@ class CreateEmployeeUserWizard(models.TransientModel):
     user_id = fields.Many2one('res.users', string='Created User', readonly=True)
     company_url = fields.Char(string='Company URL', compute='_compute_company_url')
     
+    def _field_exists(self, model, field_name):
+        """Check if a field exists in a model"""
+        try:
+            exists = field_name in self.env[model]._fields
+            _logger.info(f"Checking if field '{field_name}' exists in model '{model}': {exists}")
+            return exists
+        except Exception as e:
+            _logger.error(f"Error checking if field '{field_name}' exists in '{model}': {str(e)}")
+            return False
+    
     @api.onchange('joining_form_id')
     def _onchange_joining_form_id(self):
         if self.joining_form_id:
@@ -65,56 +75,140 @@ class CreateEmployeeUserWizard(models.TransientModel):
         
         joining_form = self.joining_form_id
         
-        # Create employee
+        # Create employee with compatible fields
         employee_vals = {
             'name': self.name,
+        }
+        
+        # Create a partner for the employee contact information
+        partner_vals = {
+            'name': self.name,
+            'phone': self.personal_mobile,
+            'email': self.personal_email,
+            'street': joining_form.address,
+        }
+        
+        # Check if 'type' field exists to avoid errors in Odoo 17
+        if self._field_exists('res.partner', 'type'):
+            partner_vals['type'] = 'contact'
+        
+        _logger.info(f"Creating partner with values: {partner_vals}")
+        partner = self.env['res.partner'].sudo().create(partner_vals)
+        
+        # Add fields only if they exist in the hr.employee model
+        field_mapping = {
             'mobile_phone': self.personal_mobile,
+            'work_phone': self.personal_mobile,  # Alternative if mobile_phone doesn't exist
             'private_email': self.personal_email,
+            'work_email': self.personal_email,  # Alternative if private_email doesn't exist
             'department_id': self.department_id.id if self.department_id else False,
             'job_title': self.job_title,
             'gender': joining_form.gender,
             'birthday': joining_form.date_of_birth,
             'marital': joining_form.marital_status,
-            'address_home_id': self.env['res.partner'].sudo().create({
-                'name': self.name,
-                'phone': self.personal_mobile,
-                'email': self.personal_email,
-                'street': joining_form.address,
-                # In Odoo 17, 'contact' is the standard type for individuals
-                'type': 'contact',
-            }).id,
         }
         
-        # Add emergency contact if provided
+        for field, value in field_mapping.items():
+            if self._field_exists('hr.employee', field) and value:
+                employee_vals[field] = value
+        
+        # Handle employee's partner association differently for Odoo 17
+        _logger.info("Checking for private address field in hr.employee model...")
+        
+        # In Odoo 17, the employee's private address can be set after creation
+        # We will determine which field to use and set it after the employee is created
+        has_address_home_id = self._field_exists('hr.employee', 'address_home_id')
+        has_address_id = self._field_exists('hr.employee', 'address_id') 
+        has_partner_id = self._field_exists('hr.employee', 'partner_id')
+        
+        _logger.info(f"Private address field existence - address_home_id: {has_address_home_id}, address_id: {has_address_id}, partner_id: {has_partner_id}")
+            
+        # Handle emergency contact if provided
         if joining_form.emergency_contact_name:
-            emergency_contact = self.env['res.partner'].sudo().create({
+            emergency_contact_vals = {
                 'name': joining_form.emergency_contact_name,
                 'phone': joining_form.emergency_contact_mobile,
                 'email': joining_form.emergency_contact_email,
                 'street': joining_form.emergency_contact_address,
-                # In Odoo 17, 'contact' is the standard type for individuals
-                'type': 'contact',
-            })
-            employee_vals['emergency_contact'] = joining_form.emergency_contact_name
-            employee_vals['emergency_phone'] = joining_form.emergency_contact_mobile
+            }
+            
+            # Check if 'type' field exists to avoid errors in Odoo 17
+            if self._field_exists('res.partner', 'type'):
+                emergency_contact_vals['type'] = 'contact'
+            
+            _logger.info(f"Creating emergency contact partner with values: {emergency_contact_vals}")
+            emergency_contact = self.env['res.partner'].sudo().create(emergency_contact_vals)
+            
+            # Only add emergency fields if they exist
+            if self._field_exists('hr.employee', 'emergency_contact'):
+                employee_vals['emergency_contact'] = joining_form.emergency_contact_name
+            if self._field_exists('hr.employee', 'emergency_phone'):
+                employee_vals['emergency_phone'] = joining_form.emergency_contact_mobile
         
-        employee = self.env['hr.employee'].sudo().create(employee_vals)
-        self.employee_created = True
-        self.employee_id = employee.id
+        # Log the values being used to create the employee
+        _logger.info(f"Creating employee with values: {employee_vals}")
+        
+        # Create the employee
+        try:
+            employee = self.env['hr.employee'].sudo().create(employee_vals)
+            self.employee_created = True
+            self.employee_id = employee.id
+            _logger.info(f"Employee created successfully with ID: {employee.id}")
+            
+            # Now that we have the employee, try to set the private address
+            if has_address_home_id:
+                try:
+                    employee.write({'address_home_id': partner.id})
+                    _logger.info("Successfully set address_home_id")
+                except Exception as e:
+                    _logger.warning(f"Could not set address_home_id: {str(e)}")
+            elif has_address_id:
+                try:
+                    employee.write({'address_id': partner.id})
+                    _logger.info("Successfully set address_id")
+                except Exception as e:
+                    _logger.warning(f"Could not set address_id: {str(e)}")
+            elif has_partner_id:
+                try:
+                    employee.write({'partner_id': partner.id})
+                    _logger.info("Successfully set partner_id")
+                except Exception as e:
+                    _logger.warning(f"Could not set partner_id: {str(e)}")
+            else:
+                _logger.warning("Could not find a compatible private address field on the employee model")
+                
+        except Exception as e:
+            _logger.error(f"Error creating employee: {str(e)}")
+            raise UserError(_("Error creating employee: %s") % str(e))
         
         # Create user if requested
         if self.create_user and self.official_email:
-            user_vals = {
-                'name': self.name,
-                'login': self.official_email,
-                'password': self.password,
-                'email': self.official_email,
-                'groups_id': [(6, 0, [self.env.ref('base.group_user').id])],
-            }
-            user = self.env['res.users'].sudo().create(user_vals)
-            employee.user_id = user.id
-            self.user_created = True
-            self.user_id = user.id
+            try:
+                user_vals = {
+                    'name': self.name,
+                    'login': self.official_email,
+                    'password': self.password,
+                    'email': self.official_email,
+                    'groups_id': [(6, 0, [self.env.ref('base.group_user').id])],
+                }
+                _logger.info(f"Creating user with values: {user_vals}")
+                user = self.env['res.users'].sudo().create(user_vals)
+                
+                # Link the employee to the user
+                try:
+                    employee.write({'user_id': user.id})
+                    _logger.info(f"Linked employee {employee.id} to user {user.id}")
+                except Exception as e:
+                    _logger.warning(f"Could not link employee to user: {str(e)}")
+                    
+                self.user_created = True
+                self.user_id = user.id
+                _logger.info(f"User created successfully with ID: {user.id}")
+            except Exception as e:
+                _logger.error(f"Error creating user: {str(e)}")
+                # Don't raise an exception here, as we've already created the employee
+                # Just log the error and continue
+                self.user_created = False
         
         # Update the joining form
         update_vals = {
