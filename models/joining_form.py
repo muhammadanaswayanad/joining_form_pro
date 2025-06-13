@@ -198,3 +198,33 @@ class JoiningForm(models.Model):
                 'default_job_title': self.designation,
             }
         }
+        
+    def action_view_employee(self):
+        """Open the related employee form view"""
+        self.ensure_one()
+        if not self.employee_id:
+            return
+            
+        return {
+            'name': _('Employee'),
+            'type': 'ir.actions.act_window',
+            'res_model': 'hr.employee',
+            'view_mode': 'form',
+            'res_id': self.employee_id.id,
+            'target': 'current',
+        }
+        
+    def action_view_user(self):
+        """Open the related user form view"""
+        self.ensure_one()
+        if not self.user_id:
+            return
+            
+        return {
+            'name': _('User'),
+            'type': 'ir.actions.act_window',
+            'res_model': 'res.users',
+            'view_mode': 'form',
+            'res_id': self.user_id.id,
+            'target': 'current',
+        }
