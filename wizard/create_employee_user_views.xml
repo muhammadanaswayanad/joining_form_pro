@@ -41,11 +41,8 @@
                         <field name="password" readonly="1" string="Password"/>
                     </group>
                     
-                    <div class="d-flex align-items-center mt-3 mb-3">
-                        <p class="text-muted mb-0 mr-3">Please share these credentials with the employee.</p>
-                        <button name="action_copy_credentials" type="button" class="btn btn-primary copy-credentials-btn">
-                            <i class="fa fa-clipboard mr-1"/> Copy to Clipboard
-                        </button>
+                    <div class="alert alert-info mt-3 mb-3">
+                        <p class="mb-0">Please manually share these credentials with the employee.</p>
                     </div>
                     
                     <div class="card mt-3">
