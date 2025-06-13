@@ -33,14 +33,33 @@
                     <field name="password" invisible="not create_user"/>
                 </group>
                 
-                <div invisible="not user_created">
+                <div invisible="not user_created" class="o_credential_container">
                     <group string="Credentials for the new user">
                         <field name="user_id" readonly="1" options="{'no_open': True}"/>
                         <field name="company_url" readonly="1" string="Login URL"/>
                         <field name="official_email" readonly="1" string="Username"/>
                         <field name="password" readonly="1" string="Password"/>
                     </group>
-                    <p class="text-muted">Please share these credentials with the employee.</p>
+                    
+                    <div class="d-flex align-items-center mt-3 mb-3">
+                        <p class="text-muted mb-0 mr-3">Please share these credentials with the employee.</p>
+                        <button type="button" class="btn btn-primary copy-credentials-btn">
+                            <i class="fa fa-clipboard mr-1"/> Copy to Clipboard
+                        </button>
+                    </div>
+                    
+                    <div class="card mt-3">
+                        <div class="card-header bg-light">
+                            <h5 class="card-title mb-0">Formatted Credentials</h5>
+                        </div>
+                        <div class="card-body bg-white">
+                            <pre class="mb-0"><field name="name" readonly="1"/>
+<field name="company_url" readonly="1"/>
+
+Username: <field name="official_email" readonly="1"/>
+Password: <field name="password" readonly="1"/></pre>
+                        </div>
+                    </div>
                 </div>
                 
                 <field name="employee_id" invisible="1"/>

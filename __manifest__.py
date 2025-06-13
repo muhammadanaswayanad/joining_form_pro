@@ -24,6 +24,10 @@
             'joining_form_pro/static/src/js/joining_form.js',
             'joining_form_pro/static/src/css/joining_form.css',
         ],
+        'web.assets_backend': [
+            'joining_form_pro/static/src/js/copy_credentials.js',
+            'joining_form_pro/static/src/css/copy_credentials.css',
+        ],
     },
     'demo': [],
     'installable': True,
