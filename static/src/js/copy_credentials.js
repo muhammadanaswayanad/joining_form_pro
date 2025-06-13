@@ -1,14 +1,10 @@
-odoo.define('joining_form_pro.copy_credentials', [
-    'web.core',
-    'web.FormController',
-    'underscore'
-], function (require) {
+odoo.define('joining_form_pro.copy_credentials', function (require) {
     'use strict';
 
-    var core = require('web.core');
-    var _t = core._t;
-    var FormController = require('web.FormController');
-    var _ = require('underscore');
+    const core = require('web.core');
+    const { _t } = core;
+    const FormController = require('web.FormController');
+    const _ = require('underscore');
 
     FormController.include({
         events: _.extend({}, FormController.prototype.events, {
@@ -22,22 +18,22 @@ odoo.define('joining_form_pro.copy_credentials', [
          */
         _onCopyCredentialsClick: function (ev) {
             ev.preventDefault();
-            var self = this;
+            const self = this;
             
             // Only proceed if we're on the right model
             if (this.modelName !== 'create.employee.user.wizard') {
                 return;
             }
             
-            var record = this.model.get(this.handle);
+            const record = this.model.get(this.handle);
             
             if (record && record.data) {
-                var userName = record.data.name || '';
-                var loginUrl = record.data.company_url || '';
-                var username = record.data.official_email || '';
-                var password = record.data.password || '';
+                const userName = record.data.name || '';
+                const loginUrl = record.data.company_url || '';
+                const username = record.data.official_email || '';
+                const password = record.data.password || '';
                 
-                var credentialText = userName + '\n' + loginUrl + '\n\n' + 
+                const credentialText = userName + '\n' + loginUrl + '\n\n' + 
                                     'Username: ' + username + '\n' + 
                                     'Password: ' + password;
                 
@@ -63,8 +59,8 @@ odoo.define('joining_form_pro.copy_credentials', [
          * @param {String} text - Text to copy to clipboard
          */
         _fallbackCopyTextToClipboard: function(text) {
-            var self = this;
-            var textArea = document.createElement("textarea");
+            const self = this;
+            const textArea = document.createElement("textarea");
             
             // Style the textarea to be invisible
             textArea.style.position = 'fixed';
@@ -84,7 +80,7 @@ odoo.define('joining_form_pro.copy_credentials', [
             textArea.select();
             
             try {
-                var successful = document.execCommand('copy');
+                const successful = document.execCommand('copy');
                 if (successful) {
                     self._showCopySuccess();
                 } else {
@@ -111,8 +107,8 @@ odoo.define('joining_form_pro.copy_credentials', [
             });
             
             // Visual feedback on the button
-            var $button = this.$('.copy-credentials-btn');
-            var originalText = $button.html();
+            const $button = this.$('.copy-credentials-btn');
+            const originalText = $button.html();
             
             $button.html('<i class="fa fa-check mr-1"/> Copied!');
             $button.addClass('btn-success').removeClass('btn-primary');

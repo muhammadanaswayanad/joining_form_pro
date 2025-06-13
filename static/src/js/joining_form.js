@@ -1,9 +1,7 @@
-odoo.define('joining_form_pro.form', [
-    'web.public.widget'
-], function (require) {
+odoo.define('joining_form_pro.form', function (require) {
     'use strict';
     
-    var publicWidget = require('web.public.widget');
+    const publicWidget = require('web.public.widget');
     
     publicWidget.registry.JoiningFormWidget = publicWidget.Widget.extend({
         selector: '#wrap:has(form[action="/joining/form/submit"])',
