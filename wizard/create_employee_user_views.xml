@@ -43,7 +43,7 @@
                     
                     <div class="d-flex align-items-center mt-3 mb-3">
                         <p class="text-muted mb-0 mr-3">Please share these credentials with the employee.</p>
-                        <button type="button" class="btn btn-primary copy-credentials-btn">
+                        <button name="action_copy_credentials" type="button" class="btn btn-primary copy-credentials-btn">
                             <i class="fa fa-clipboard mr-1"/> Copy to Clipboard
                         </button>
                     </div>
