@@ -80,7 +80,8 @@ class CreateEmployeeUserWizard(models.TransientModel):
                 'phone': self.personal_mobile,
                 'email': self.personal_email,
                 'street': joining_form.address,
-                'type': 'private',
+                # In Odoo 17, 'contact' is the standard type for individuals
+                'type': 'contact',
             }).id,
         }
         
@@ -91,7 +92,8 @@ class CreateEmployeeUserWizard(models.TransientModel):
                 'phone': joining_form.emergency_contact_mobile,
                 'email': joining_form.emergency_contact_email,
                 'street': joining_form.emergency_contact_address,
-                'type': 'private',
+                # In Odoo 17, 'contact' is the standard type for individuals
+                'type': 'contact',
             })
             employee_vals['emergency_contact'] = joining_form.emergency_contact_name
             employee_vals['emergency_phone'] = joining_form.emergency_contact_mobile
