@@ -9,12 +9,12 @@
                 <field name="employee_created" invisible="1"/>
                 <field name="user_created" invisible="1"/>
                 
-                <div class="alert alert-success" role="alert" attrs="{'invisible': [('employee_created', '=', False)]}">
+                <div class="alert alert-success" role="alert" invisible="not employee_created">
                     <p>Employee created successfully!</p>
-                    <p attrs="{'invisible': [('user_created', '=', False)]}">User account created successfully!</p>
+                    <p invisible="not user_created">User account created successfully!</p>
                 </div>
                 
-                <group attrs="{'invisible': [('employee_created', '=', True)]}">
+                <group invisible="employee_created">
                     <group>
                         <field name="joining_form_id" readonly="1" options="{'no_open': True}"/>
                         <field name="name"/>
@@ -27,13 +27,13 @@
                     </group>
                 </group>
                 
-                <group string="User Account Information" attrs="{'invisible': [('employee_created', '=', True)]}">
+                <group string="User Account Information" invisible="employee_created">
                     <field name="create_user"/>
-                    <field name="official_email" attrs="{'required': [('create_user', '=', True)], 'invisible': [('create_user', '=', False)]}"/>
-                    <field name="password" attrs="{'invisible': [('create_user', '=', False)]}"/>
+                    <field name="official_email" required="create_user" invisible="not create_user"/>
+                    <field name="password" invisible="not create_user"/>
                 </group>
                 
-                <div attrs="{'invisible': [('user_created', '=', False)]}">
+                <div invisible="not user_created">
                     <group string="Credentials for the new user">
                         <field name="user_id" readonly="1" options="{'no_open': True}"/>
                         <div>
@@ -48,7 +48,7 @@
                 <field name="employee_id" invisible="1"/>
                 
                 <footer>
-                    <button name="action_create_employee" string="Create Employee &amp; User" type="object" class="btn-primary" attrs="{'invisible': [('employee_created', '=', True)]}"/>
+                    <button name="action_create_employee" string="Create Employee &amp; User" type="object" class="btn-primary" invisible="employee_created"/>
                     <button special="cancel" string="Close" class="btn-secondary"/>
                 </footer>
             </form>

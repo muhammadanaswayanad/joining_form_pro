@@ -26,24 +26,24 @@
         <field name="arch" type="xml">
             <form string="Joining Form">
                 <header>
-                    <button name="action_under_review" string="Mark as Under Review" type="object" class="oe_highlight" attrs="{'invisible': [('state', 'not in', ['draft'])]}"/>
-                    <button name="action_approve" string="Approve" type="object" class="oe_highlight" attrs="{'invisible': [('state', 'not in', ['draft', 'under_review'])]}"/>
-                    <button name="action_create_employee_wizard" string="Create Employee &amp; User" type="object" class="oe_highlight" attrs="{'invisible': [('state', 'not in', ['approved'])]}"/>
-                    <button name="action_reject" string="Reject" type="object" attrs="{'invisible': [('state', 'not in', ['draft', 'under_review', 'approved'])]}"/>
-                    <button name="action_reset_to_draft" string="Reset to Draft" type="object" attrs="{'invisible': [('state', 'in', ['draft'])]}"/>
+                    <button name="action_under_review" string="Mark as Under Review" type="object" class="oe_highlight" invisible="state != 'draft'"/>
+                    <button name="action_approve" string="Approve" type="object" class="oe_highlight" invisible="state not in ('draft', 'under_review')"/>
+                    <button name="action_create_employee_wizard" string="Create Employee &amp; User" type="object" class="oe_highlight" invisible="state != 'approved'"/>
+                    <button name="action_reject" string="Reject" type="object" invisible="state not in ('draft', 'under_review', 'approved')"/>
+                    <button name="action_reset_to_draft" string="Reset to Draft" type="object" invisible="state == 'draft'"/>
                     <field name="state" widget="statusbar" statusbar_visible="draft,under_review,approved,employee_created,rejected"/>
                 </header>
                 <sheet>
                     <div class="oe_button_box" name="button_box">
                         <button class="oe_stat_button" name="action_view_employee" type="object" icon="fa-id-card-o"
-                                attrs="{'invisible': [('employee_id', '=', False)]}">
+                                invisible="not employee_id">
                             <div class="o_stat_info">
                                 <field name="employee_id" invisible="1"/>
                                 <span class="o_stat_text">Employee</span>
                             </div>
                         </button>
                         <button class="oe_stat_button" name="action_view_user" type="object" icon="fa-user"
-                                attrs="{'invisible': [('user_id', '=', False)]}">
+                                invisible="not user_id">
                             <div class="o_stat_info">
                                 <field name="user_id" invisible="1"/>
                                 <span class="o_stat_text">User</span>
@@ -79,8 +79,8 @@
                                     <field name="gender"/>
                                     <field name="date_of_birth"/>
                                     <field name="marital_status"/>
-                                    <field name="spouse_name" attrs="{'invisible': [('marital_status', '!=', 'married')]}"/>
-                                    <field name="children_count" attrs="{'invisible': [('marital_status', '!=', 'married')]}"/>
+                                    <field name="spouse_name" invisible="marital_status != 'married'"/>
+                                    <field name="children_count" invisible="marital_status != 'married'"/>
                                     <field name="blood_group"/>
                                 </group>
                                 <group>
@@ -92,7 +92,7 @@
                                     <field name="has_anchoring_exp"/>
                                 </group>
                             </group>
-                            <group string="Social Media" attrs="{'invisible': [('is_social_media_active', '!=', 'yes')]}">
+                            <group string="Social Media" invisible="is_social_media_active != 'yes'">
                                 <field name="instagram_url" widget="url"/>
                                 <field name="facebook_url" widget="url"/>
                                 <field name="linkedin_url" widget="url"/>
