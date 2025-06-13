@@ -60,11 +60,15 @@ class CreateEmployeeUserWizard(models.TransientModel):
     @api.depends('user_id')
     def _compute_company_url(self):
         """Compute the company website URL for login information."""
+        base_url = self.env['ir.config_parameter'].sudo().get_param('web.base.url', '')
+        
         for record in self:
-            if record.user_id and record.user_id.company_id:
-                record.company_url = record.user_id.company_id.website or self.env.company.website or self.env.get('web.base.url', '')
+            if record.user_id and record.user_id.company_id and record.user_id.company_id.website:
+                record.company_url = record.user_id.company_id.website
+            elif self.env.company.website:
+                record.company_url = self.env.company.website
             else:
-                record.company_url = self.env.company.website or self.env.get('web.base.url', '')
+                record.company_url = base_url
     
     def action_create_employee(self):
         """Create employee and optionally user from joining form data."""
