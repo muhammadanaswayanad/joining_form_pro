@@ -5,7 +5,7 @@
         <field name="name">joining.form.tree</field>
         <field name="model">joining.form</field>
         <field name="arch" type="xml">
-            <tree string="Joining Forms" decoration-info="state=='draft'" decoration-warning="state=='under_review'" decoration-success="state=='approved'" decoration-danger="state=='rejected'">
+            <tree string="Joining Forms" decoration-info="state=='draft'" decoration-warning="state=='under_review'" decoration-success="state=='approved'" decoration-danger="state=='rejected'" create="false">
                 <field name="name"/>
                 <field name="email_id"/>
                 <field name="personal_number"/>
@@ -24,7 +24,7 @@
         <field name="name">joining.form.form</field>
         <field name="model">joining.form</field>
         <field name="arch" type="xml">
-            <form string="Joining Form">
+            <form string="Joining Form" create="false">
                 <header>
                     <button name="action_under_review" string="Mark as Under Review" type="object" class="oe_highlight" invisible="state != 'draft'"/>
                     <button name="action_approve" string="Approve" type="object" class="oe_highlight" invisible="state not in ('draft', 'under_review')"/>
@@ -230,12 +230,14 @@
         <field name="name">Joining Forms</field>
         <field name="res_model">joining.form</field>
         <field name="view_mode">tree,form</field>
+        <field name="context">{'create': False}</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
-                Create your first joining form
+                No joining form submissions yet
             </p>
             <p>
                 This is where you can manage all joining form submissions from candidates.
+                Forms are submitted through the public website.
             </p>
         </field>
     </record>
