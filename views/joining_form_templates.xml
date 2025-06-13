@@ -18,10 +18,10 @@
                         <form action="/joining/form/submit" method="post" enctype="multipart/form-data" class="o_mark_required">
                             <script>
                                 function toggleSocialMediaUrls() {
-                                    var isSocialActive = document.querySelector('input[name="is_social_media_active"]:checked')?.value;
+                                    var isSocialActive = document.querySelector('input[name="is_social_media_active"]:checked');
                                     var socialUrlFields = document.getElementById('socialMediaUrls');
                                     
-                                    if (isSocialActive === 'yes') {
+                                    if (isSocialActive &amp;&amp; isSocialActive.value === 'yes') {
                                         socialUrlFields.style.display = 'flex';
                                     } else {
                                         socialUrlFields.style.display = 'none';
@@ -29,7 +29,7 @@
                                 }
                                 
                                 function previewImage(input) {
-                                    if (input.files && input.files[0]) {
+                                    if (input.files &amp;&amp; input.files[0]) {
                                         var reader = new FileReader();
                                         
                                         reader.onload = function(e) {
