@@ -16,6 +16,22 @@
                         
                         <!-- Form -->
                         <form action="/joining/form/submit" method="post" enctype="multipart/form-data" class="o_mark_required">
+                            <script>
+                                function toggleSocialMediaUrls() {
+                                    var isSocialActive = document.querySelector('input[name="is_social_media_active"]:checked')?.value;
+                                    var socialUrlFields = document.getElementById('socialMediaUrls');
+                                    
+                                    if (isSocialActive === 'yes') {
+                                        socialUrlFields.style.display = 'flex';
+                                    } else {
+                                        socialUrlFields.style.display = 'none';
+                                    }
+                                }
+                                
+                                document.addEventListener('DOMContentLoaded', function() {
+                                    toggleSocialMediaUrls();
+                                });
+                            </script>
                             <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
                             
                             <!-- Personal Information Section -->
@@ -177,11 +193,11 @@
                                         <div class="col-md-6">
                                             <label class="form-label">Are you active in social media</label>
                                             <div class="form-check">
-                                                <input type="radio" name="is_social_media_active" id="is_social_yes" value="yes" class="form-check-input"/>
+                                                <input type="radio" name="is_social_media_active" id="is_social_yes" value="yes" class="form-check-input" onchange="toggleSocialMediaUrls()"/>
                                                 <label class="form-check-label" for="is_social_yes">Yes</label>
                                             </div>
                                             <div class="form-check">
-                                                <input type="radio" name="is_social_media_active" id="is_social_no" value="no" class="form-check-input"/>
+                                                <input type="radio" name="is_social_media_active" id="is_social_no" value="no" class="form-check-input" onchange="toggleSocialMediaUrls()"/>
                                                 <label class="form-check-label" for="is_social_no">No</label>
                                             </div>
                                         </div>
@@ -197,7 +213,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="row mb-3 social_media_urls" style="display: none;">
+                                    <div class="row mb-3 social_media_urls" id="socialMediaUrls" style="display: none;">
                                         <div class="col-12 mb-3">
                                             <h5 class="border-bottom pb-2">Social Media URLs</h5>
                                         </div>

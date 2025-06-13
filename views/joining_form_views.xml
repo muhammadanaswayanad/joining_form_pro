@@ -87,14 +87,7 @@
                                     <field name="esi_ip_number"/>
                                     <field name="aadhaar_number"/>
                                     <field name="pan_number"/>
-                                    <field name="is_social_media_active"/>
-                                    <field name="has_anchoring_exp"/>
                                 </group>
-                            </group>
-                            <group string="Social Media" invisible="is_social_media_active != 'yes'">
-                                <field name="instagram_url" widget="url"/>
-                                <field name="facebook_url" widget="url"/>
-                                <field name="linkedin_url" widget="url"/>
                             </group>
                         </page>
                         
@@ -125,6 +118,20 @@
                                     <field name="skills"/>
                                     <field name="certification"/>
                                     <field name="hobbies"/>
+                                </group>
+                            </group>
+                        </page>
+                        
+                        <page string="Skills &amp; Social Media" name="skills_social_media">
+                            <group>
+                                <group string="Social Media">
+                                    <field name="is_social_media_active"/>
+                                    <field name="instagram_url" widget="url" invisible="is_social_media_active != 'yes'"/>
+                                    <field name="facebook_url" widget="url" invisible="is_social_media_active != 'yes'"/>
+                                    <field name="linkedin_url" widget="url" invisible="is_social_media_active != 'yes'"/>
+                                </group>
+                                <group string="Anchoring Experience">
+                                    <field name="has_anchoring_exp"/>
                                 </group>
                             </group>
                         </page>
