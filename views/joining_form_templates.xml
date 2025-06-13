@@ -1,0 +1,508 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Public Joining Form Template -->
+    <template id="joining_form_template" name="Joining Form">
+        <t t-call="website.layout">
+            <div id="wrap" class="container">
+                <div class="row mt16 mb16">
+                    <div class="col-12">
+                        <h1 class="text-center">Employee Joining Form</h1>
+                        <p class="text-center">Please fill in the details below to submit your joining information.</p>
+                        
+                        <!-- Error Message -->
+                        <div t-if="error_message" class="alert alert-danger mt16 mb16">
+                            <p><t t-esc="error_message"/></p>
+                        </div>
+                        
+                        <!-- Form -->
+                        <form action="/joining/form/submit" method="post" enctype="multipart/form-data" class="o_mark_required">
+                            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                            
+                            <!-- Personal Information Section -->
+                            <div class="card mb-4">
+                                <div class="card-header bg-primary text-white">
+                                    <h3 class="card-title mb-0">Personal Information</h3>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row mb-3">
+                                        <div class="col-md-4">
+                                            <label class="form-label" for="name">Full Name <span class="text-danger">*</span></label>
+                                            <input type="text" name="name" id="name" class="form-control" required="required"/>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="form-label" for="personal_number">Personal Number <span class="text-danger">*</span></label>
+                                            <input type="tel" name="personal_number" id="personal_number" class="form-control" required="required"/>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="form-label" for="branch">Branch</label>
+                                            <input type="text" name="branch" id="branch" class="form-control"/>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-md-4">
+                                            <label class="form-label" for="email_id">Email ID <span class="text-danger">*</span></label>
+                                            <input type="email" name="email_id" id="email_id" class="form-control" required="required"/>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="form-label" for="department_id">Department</label>
+                                            <select name="department_id" id="department_id" class="form-select">
+                                                <option value="">Select Department</option>
+                                                <t t-foreach="departments" t-as="department">
+                                                    <option t-att-value="department.id"><t t-esc="department.name"/></option>
+                                                </t>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="form-label" for="designation">Designation <span class="text-danger">*</span></label>
+                                            <input type="text" name="designation" id="designation" class="form-control" required="required"/>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-md-4">
+                                            <label class="form-label" for="date_of_joining">Date Of Joining</label>
+                                            <input type="date" name="date_of_joining" id="date_of_joining" class="form-control"/>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="form-label" for="gender">Gender</label>
+                                            <select name="gender" id="gender" class="form-select">
+                                                <option value="">Select Gender</option>
+                                                <option value="male">Male</option>
+                                                <option value="female">Female</option>
+                                                <option value="other">Other</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="form-label" for="date_of_birth">Date Of Birth</label>
+                                            <input type="date" name="date_of_birth" id="date_of_birth" class="form-control"/>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-md-4">
+                                            <label class="form-label" for="marital_status">Marital Status</label>
+                                            <select name="marital_status" id="marital_status" class="form-select">
+                                                <option value="">Select Status</option>
+                                                <option value="single">Single</option>
+                                                <option value="married">Married</option>
+                                                <option value="divorced">Divorced</option>
+                                                <option value="widowed">Widowed</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-4 spouse_field" style="display: none;">
+                                            <label class="form-label" for="spouse_name">Name Of Spouse</label>
+                                            <input type="text" name="spouse_name" id="spouse_name" class="form-control"/>
+                                        </div>
+                                        <div class="col-md-4 spouse_field" style="display: none;">
+                                            <label class="form-label" for="children_count">Number of Children</label>
+                                            <input type="number" name="children_count" id="children_count" class="form-control" value="0" min="0"/>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-12">
+                                            <label class="form-label" for="address">Address <span class="text-danger">*</span></label>
+                                            <textarea name="address" id="address" class="form-control" rows="3" required="required"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- IDs and Medical Section -->
+                            <div class="card mb-4">
+                                <div class="card-header bg-primary text-white">
+                                    <h3 class="card-title mb-0">IDs &amp; Medical Information</h3>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row mb-3">
+                                        <div class="col-md-4">
+                                            <label class="form-label" for="pf_uan_number">PF UAN Number</label>
+                                            <input type="text" name="pf_uan_number" id="pf_uan_number" class="form-control"/>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="form-label" for="esi_ip_number">ESI IP Number</label>
+                                            <input type="text" name="esi_ip_number" id="esi_ip_number" class="form-control"/>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="form-label" for="blood_group">Blood Group</label>
+                                            <select name="blood_group" id="blood_group" class="form-select">
+                                                <option value="">Select Blood Group</option>
+                                                <option value="a+">A+</option>
+                                                <option value="a-">A-</option>
+                                                <option value="b+">B+</option>
+                                                <option value="b-">B-</option>
+                                                <option value="o+">O+</option>
+                                                <option value="o-">O-</option>
+                                                <option value="ab+">AB+</option>
+                                                <option value="ab-">AB-</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            <label class="form-label" for="aadhaar_number">Aadhaar Number</label>
+                                            <input type="text" name="aadhaar_number" id="aadhaar_number" class="form-control"/>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label" for="pan_number">Pan Card Number</label>
+                                            <input type="text" name="pan_number" id="pan_number" class="form-control"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Skills and Social Media Section -->
+                            <div class="card mb-4">
+                                <div class="card-header bg-primary text-white">
+                                    <h3 class="card-title mb-0">Skills &amp; Social Media</h3>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row mb-3">
+                                        <div class="col-md-4">
+                                            <label class="form-label" for="skills">Skills</label>
+                                            <textarea name="skills" id="skills" class="form-control" rows="3"></textarea>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="form-label" for="certification">Certification</label>
+                                            <textarea name="certification" id="certification" class="form-control" rows="3"></textarea>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="form-label" for="hobbies">Hobbies and Interests</label>
+                                            <textarea name="hobbies" id="hobbies" class="form-control" rows="3"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            <label class="form-label">Are you active in social media</label>
+                                            <div class="form-check">
+                                                <input type="radio" name="is_social_media_active" id="is_social_yes" value="yes" class="form-check-input"/>
+                                                <label class="form-check-label" for="is_social_yes">Yes</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input type="radio" name="is_social_media_active" id="is_social_no" value="no" class="form-check-input"/>
+                                                <label class="form-check-label" for="is_social_no">No</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label">Have you done anchoring</label>
+                                            <div class="form-check">
+                                                <input type="radio" name="has_anchoring_exp" id="anchoring_yes" value="yes" class="form-check-input"/>
+                                                <label class="form-check-label" for="anchoring_yes">Yes</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input type="radio" name="has_anchoring_exp" id="anchoring_no" value="no" class="form-check-input"/>
+                                                <label class="form-check-label" for="anchoring_no">No</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3 social_media_urls" style="display: none;">
+                                        <div class="col-12">
+                                            <label class="form-label">Social Media URLs</label>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="form-label" for="instagram_url">Instagram</label>
+                                            <input type="url" name="instagram_url" id="instagram_url" class="form-control"/>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="form-label" for="facebook_url">Facebook</label>
+                                            <input type="url" name="facebook_url" id="facebook_url" class="form-control"/>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="form-label" for="linkedin_url">LinkedIn</label>
+                                            <input type="url" name="linkedin_url" id="linkedin_url" class="form-control"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Banking Information Section -->
+                            <div class="card mb-4">
+                                <div class="card-header bg-primary text-white">
+                                    <h3 class="card-title mb-0">Banking Information</h3>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row mb-3">
+                                        <div class="col-md-4">
+                                            <label class="form-label" for="bank_name">Bank Name</label>
+                                            <input type="text" name="bank_name" id="bank_name" class="form-control"/>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="form-label" for="bank_account_number">Bank Account Number</label>
+                                            <input type="text" name="bank_account_number" id="bank_account_number" class="form-control"/>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="form-label" for="bank_branch">Branch</label>
+                                            <input type="text" name="bank_branch" id="bank_branch" class="form-control"/>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            <label class="form-label" for="ifsc_code">IFSC Code</label>
+                                            <input type="text" name="ifsc_code" id="ifsc_code" class="form-control"/>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label" for="micr_code">MICR Code</label>
+                                            <input type="text" name="micr_code" id="micr_code" class="form-control"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Work Location Section -->
+                            <div class="card mb-4">
+                                <div class="card-header bg-primary text-white">
+                                    <h3 class="card-title mb-0">Work Location</h3>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            <label class="form-label" for="work_location">Work Location (city)</label>
+                                            <input type="text" name="work_location" id="work_location" class="form-control"/>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label" for="work_place">Work Place (office)</label>
+                                            <input type="text" name="work_place" id="work_place" class="form-control"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Education Section -->
+                            <div class="card mb-4">
+                                <div class="card-header bg-primary text-white">
+                                    <h3 class="card-title mb-0">Education</h3>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            <label class="form-label" for="edu_college_name">Highest Education Qualification - College Name</label>
+                                            <input type="text" name="edu_college_name" id="edu_college_name" class="form-control"/>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label" for="edu_type">Highest Education Qualification - Full Time / Part Time / Distance Education</label>
+                                            <select name="edu_type" id="edu_type" class="form-select">
+                                                <option value="">Select Type</option>
+                                                <option value="full_time">Full Time</option>
+                                                <option value="part_time">Part Time</option>
+                                                <option value="distance">Distance Education</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-md-4">
+                                            <label class="form-label" for="edu_degree">Highest Education Qualification - Degree</label>
+                                            <input type="text" name="edu_degree" id="edu_degree" class="form-control"/>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="form-label" for="edu_specialization">Highest Education Qualification - Specialization</label>
+                                            <input type="text" name="edu_specialization" id="edu_specialization" class="form-control"/>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="form-label" for="edu_passout_date">Highest Education Qualification - Passed out Month and Year</label>
+                                            <input type="text" name="edu_passout_date" id="edu_passout_date" class="form-control" placeholder="e.g., May 2020"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Previous Employment Section -->
+                            <div class="card mb-4">
+                                <div class="card-header bg-primary text-white">
+                                    <h3 class="card-title mb-0">Previous Employment</h3>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            <label class="form-label" for="prev_company_name">Previous Employment Company Name</label>
+                                            <input type="text" name="prev_company_name" id="prev_company_name" class="form-control"/>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label" for="prev_company_location">Previous Employment Company Location</label>
+                                            <input type="text" name="prev_company_location" id="prev_company_location" class="form-control"/>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            <label class="form-label" for="prev_designation">Previous Employment Company Designation</label>
+                                            <input type="text" name="prev_designation" id="prev_designation" class="form-control"/>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label" for="prev_tenure">Previous Employment Company Tenure (Eg: 2007 June to 2010 Dec)</label>
+                                            <input type="text" name="prev_tenure" id="prev_tenure" class="form-control" placeholder="e.g., 2007 June to 2010 Dec"/>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            <label class="form-label" for="total_experience">Total Years of Experience</label>
+                                            <input type="text" name="total_experience" id="total_experience" class="form-control" placeholder="e.g., 5 years"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Emergency Contact Section -->
+                            <div class="card mb-4">
+                                <div class="card-header bg-primary text-white">
+                                    <h3 class="card-title mb-0">Emergency Contact</h3>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row mb-3">
+                                        <div class="col-md-4">
+                                            <label class="form-label" for="emergency_contact_name">Emergency Contact Person Name</label>
+                                            <input type="text" name="emergency_contact_name" id="emergency_contact_name" class="form-control"/>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="form-label" for="emergency_contact_relation">Emergency Contact Person Relationship</label>
+                                            <input type="text" name="emergency_contact_relation" id="emergency_contact_relation" class="form-control"/>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="form-label" for="emergency_contact_mobile">Emergency Contact Person Mobile Number</label>
+                                            <input type="tel" name="emergency_contact_mobile" id="emergency_contact_mobile" class="form-control"/>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            <label class="form-label" for="emergency_contact_email">Emergency Contact Person Email ID</label>
+                                            <input type="email" name="emergency_contact_email" id="emergency_contact_email" class="form-control"/>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label" for="emergency_allergies">Emergency Details - Any Allergies specifically</label>
+                                            <input type="text" name="emergency_allergies" id="emergency_allergies" class="form-control"/>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-12">
+                                            <label class="form-label" for="emergency_contact_address">Emergency Contact Person Correspondence Address</label>
+                                            <textarea name="emergency_contact_address" id="emergency_contact_address" class="form-control" rows="3"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Nominee Section -->
+                            <div class="card mb-4">
+                                <div class="card-header bg-primary text-white">
+                                    <h3 class="card-title mb-0">Nominee Details</h3>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row mb-3">
+                                        <div class="col-md-4">
+                                            <label class="form-label" for="nominee_name">Nominee Name</label>
+                                            <input type="text" name="nominee_name" id="nominee_name" class="form-control"/>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="form-label" for="nominee_relation">Nominee Relationship</label>
+                                            <input type="text" name="nominee_relation" id="nominee_relation" class="form-control"/>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="form-label" for="nominee_id_proof">Nominee ID Proof (PAN or Aadhar Number)</label>
+                                            <input type="text" name="nominee_id_proof" id="nominee_id_proof" class="form-control"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Document Upload Section -->
+                            <div class="card mb-4">
+                                <div class="card-header bg-primary text-white">
+                                    <h3 class="card-title mb-0">Document Upload</h3>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row mb-3">
+                                        <div class="col-md-4">
+                                            <label class="form-label" for="resume">Upload Your Resume</label>
+                                            <input type="file" name="resume" id="resume" class="form-control" accept="application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"/>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="form-label" for="photo">Photo</label>
+                                            <input type="file" name="photo" id="photo" class="form-control" accept="image/*"/>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="form-label" for="aadhaar_card">Upload Aadhaar Card</label>
+                                            <input type="file" name="aadhaar_card" id="aadhaar_card" class="form-control" accept="image/*,application/pdf"/>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            <label class="form-label" for="pan_card">Pan Card Photo</label>
+                                            <input type="file" name="pan_card" id="pan_card" class="form-control" accept="image/*,application/pdf"/>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label" for="bank_passbook">Bank Passbook</label>
+                                            <input type="file" name="bank_passbook" id="bank_passbook" class="form-control" accept="image/*,application/pdf"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="text-center mt-4 mb-4">
+                                <button type="submit" class="btn btn-primary btn-lg px-5">Submit</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+    
+    <!-- Thank You Page After Submission -->
+    <template id="joining_form_thank_you" name="Joining Form Thank You">
+        <t t-call="website.layout">
+            <div id="wrap" class="container">
+                <div class="row mt32 mb32">
+                    <div class="col-12 text-center">
+                        <i class="fa fa-check-circle fa-5x text-success"></i>
+                        <h1 class="mt16">Thank You!</h1>
+                        <h3 class="text-muted">Your joining form has been submitted successfully.</h3>
+                        <p class="mt16">Our HR team will review your submission and contact you shortly.</p>
+                        <a href="/" class="btn btn-primary mt16">Back to Home</a>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+    
+    <!-- Portal My Joining Forms -->
+    <template id="portal_my_joining_forms" name="My Joining Forms">
+        <t t-call="portal.portal_layout">
+            <t t-set="breadcrumbs_searchbar" t-value="True"/>
+            
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title">My Joining Form</t>
+            </t>
+            
+            <div class="o_portal_my_joining_forms">
+                <t t-if="not joining_forms">
+                    <p>You don't have any joining form records.</p>
+                </t>
+                <t t-if="joining_forms">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Designation</th>
+                                    <th>Status</th>
+                                    <th>Submission Date</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="joining_forms" t-as="form">
+                                    <tr>
+                                        <td><t t-esc="form.name"/></td>
+                                        <td><t t-esc="form.designation"/></td>
+                                        <td>
+                                            <span t-if="form.state == 'draft'" class="badge bg-info">New Submission</span>
+                                            <span t-if="form.state == 'under_review'" class="badge bg-warning">Under Review</span>
+                                            <span t-if="form.state == 'approved'" class="badge bg-success">Approved</span>
+                                            <span t-if="form.state == 'employee_created'" class="badge bg-primary">Employee Created</span>
+                                            <span t-if="form.state == 'rejected'" class="badge bg-danger">Rejected</span>
+                                        </td>
+                                        <td><span t-field="form.create_date" t-options='{"widget": "date"}'/></td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+                    </div>
+                </t>
+            </div>
+        </t>
+    </template>
+</odoo>

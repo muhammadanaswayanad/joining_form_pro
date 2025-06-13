@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Joining Form Tree View -->
+    <record id="view_joining_form_tree" model="ir.ui.view">
+        <field name="name">joining.form.tree</field>
+        <field name="model">joining.form</field>
+        <field name="arch" type="xml">
+            <tree string="Joining Forms" decoration-info="state=='draft'" decoration-warning="state=='under_review'" decoration-success="state=='approved'" decoration-danger="state=='rejected'">
+                <field name="name"/>
+                <field name="email_id"/>
+                <field name="personal_number"/>
+                <field name="department_id"/>
+                <field name="designation"/>
+                <field name="date_of_joining"/>
+                <field name="state" widget="badge"/>
+                <field name="create_date" string="Submission Date"/>
+                <field name="employee_id"/>
+            </tree>
+        </field>
+    </record>
+    
+    <!-- Joining Form Form View -->
+    <record id="view_joining_form_form" model="ir.ui.view">
+        <field name="name">joining.form.form</field>
+        <field name="model">joining.form</field>
+        <field name="arch" type="xml">
+            <form string="Joining Form">
+                <header>
+                    <button name="action_under_review" string="Mark as Under Review" type="object" class="oe_highlight" attrs="{'invisible': [('state', 'not in', ['draft'])]}"/>
+                    <button name="action_approve" string="Approve" type="object" class="oe_highlight" attrs="{'invisible': [('state', 'not in', ['draft', 'under_review'])]}"/>
+                    <button name="action_create_employee_wizard" string="Create Employee &amp; User" type="object" class="oe_highlight" attrs="{'invisible': [('state', 'not in', ['approved'])]}"/>
+                    <button name="action_reject" string="Reject" type="object" attrs="{'invisible': [('state', 'not in', ['draft', 'under_review', 'approved'])]}"/>
+                    <button name="action_reset_to_draft" string="Reset to Draft" type="object" attrs="{'invisible': [('state', 'in', ['draft'])]}"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,under_review,approved,employee_created,rejected"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button class="oe_stat_button" name="action_view_employee" type="object" icon="fa-id-card-o"
+                                attrs="{'invisible': [('employee_id', '=', False)]}">
+                            <div class="o_stat_info">
+                                <field name="employee_id" invisible="1"/>
+                                <span class="o_stat_text">Employee</span>
+                            </div>
+                        </button>
+                        <button class="oe_stat_button" name="action_view_user" type="object" icon="fa-user"
+                                attrs="{'invisible': [('user_id', '=', False)]}">
+                            <div class="o_stat_info">
+                                <field name="user_id" invisible="1"/>
+                                <span class="o_stat_text">User</span>
+                            </div>
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="Full Name" readonly="0"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="personal_number" required="1"/>
+                            <field name="branch"/>
+                            <field name="email_id" required="1"/>
+                            <field name="date_of_joining"/>
+                            <field name="submitted_from_public" invisible="1"/>
+                        </group>
+                        <group>
+                            <field name="department_id"/>
+                            <field name="designation" required="1"/>
+                            <field name="work_location"/>
+                            <field name="work_place"/>
+                        </group>
+                    </group>
+                    
+                    <notebook>
+                        <page string="Personal Information" name="personal_info">
+                            <group>
+                                <group>
+                                    <field name="address" required="1"/>
+                                    <field name="gender"/>
+                                    <field name="date_of_birth"/>
+                                    <field name="marital_status"/>
+                                    <field name="spouse_name" attrs="{'invisible': [('marital_status', '!=', 'married')]}"/>
+                                    <field name="children_count" attrs="{'invisible': [('marital_status', '!=', 'married')]}"/>
+                                    <field name="blood_group"/>
+                                </group>
+                                <group>
+                                    <field name="pf_uan_number"/>
+                                    <field name="esi_ip_number"/>
+                                    <field name="aadhaar_number"/>
+                                    <field name="pan_number"/>
+                                    <field name="is_social_media_active"/>
+                                    <field name="has_anchoring_exp"/>
+                                </group>
+                            </group>
+                            <group string="Social Media" attrs="{'invisible': [('is_social_media_active', '!=', 'yes')]}">
+                                <field name="instagram_url" widget="url"/>
+                                <field name="facebook_url" widget="url"/>
+                                <field name="linkedin_url" widget="url"/>
+                            </group>
+                        </page>
+                        
+                        <page string="Banking Information" name="banking_info">
+                            <group>
+                                <group>
+                                    <field name="bank_name"/>
+                                    <field name="bank_account_number"/>
+                                    <field name="bank_branch"/>
+                                </group>
+                                <group>
+                                    <field name="ifsc_code"/>
+                                    <field name="micr_code"/>
+                                </group>
+                            </group>
+                        </page>
+                        
+                        <page string="Education &amp; Skills" name="education_skills">
+                            <group>
+                                <group string="Education">
+                                    <field name="edu_college_name"/>
+                                    <field name="edu_type"/>
+                                    <field name="edu_degree"/>
+                                    <field name="edu_specialization"/>
+                                    <field name="edu_passout_date"/>
+                                </group>
+                                <group string="Skills &amp; Qualifications">
+                                    <field name="skills"/>
+                                    <field name="certification"/>
+                                    <field name="hobbies"/>
+                                </group>
+                            </group>
+                        </page>
+                        
+                        <page string="Employment History" name="employment_history">
+                            <group>
+                                <group string="Previous Employment">
+                                    <field name="prev_company_name"/>
+                                    <field name="prev_company_location"/>
+                                    <field name="prev_designation"/>
+                                    <field name="prev_tenure"/>
+                                </group>
+                                <group string="Experience">
+                                    <field name="total_experience"/>
+                                </group>
+                            </group>
+                        </page>
+                        
+                        <page string="Emergency Details" name="emergency_details">
+                            <group>
+                                <group string="Emergency Contact">
+                                    <field name="emergency_contact_name"/>
+                                    <field name="emergency_contact_relation"/>
+                                    <field name="emergency_contact_mobile"/>
+                                    <field name="emergency_contact_email"/>
+                                    <field name="emergency_contact_address"/>
+                                    <field name="emergency_allergies"/>
+                                </group>
+                                <group string="Nominee Details">
+                                    <field name="nominee_name"/>
+                                    <field name="nominee_relation"/>
+                                    <field name="nominee_id_proof"/>
+                                </group>
+                            </group>
+                        </page>
+                        
+                        <page string="Documents" name="documents">
+                            <group>
+                                <group>
+                                    <field name="resume" filename="resume_filename" widget="binary"/>
+                                    <field name="resume_filename" invisible="1"/>
+                                    <field name="photo" filename="photo_filename" widget="image"/>
+                                    <field name="photo_filename" invisible="1"/>
+                                </group>
+                                <group>
+                                    <field name="aadhaar_card" filename="aadhaar_card_filename" widget="binary"/>
+                                    <field name="aadhaar_card_filename" invisible="1"/>
+                                    <field name="pan_card" filename="pan_card_filename" widget="binary"/>
+                                    <field name="pan_card_filename" invisible="1"/>
+                                    <field name="bank_passbook" filename="bank_passbook_filename" widget="binary"/>
+                                    <field name="bank_passbook_filename" invisible="1"/>
+                                </group>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+    
+    <!-- Search View -->
+    <record id="view_joining_form_search" model="ir.ui.view">
+        <field name="name">joining.form.search</field>
+        <field name="model">joining.form</field>
+        <field name="arch" type="xml">
+            <search string="Search Joining Forms">
+                <field name="name"/>
+                <field name="email_id"/>
+                <field name="personal_number"/>
+                <field name="department_id"/>
+                <field name="designation"/>
+                <separator/>
+                <filter string="New Submissions" name="draft" domain="[('state', '=', 'draft')]"/>
+                <filter string="Under Review" name="under_review" domain="[('state', '=', 'under_review')]"/>
+                <filter string="Approved" name="approved" domain="[('state', '=', 'approved')]"/>
+                <filter string="Employee Created" name="employee_created" domain="[('state', '=', 'employee_created')]"/>
+                <filter string="Rejected" name="rejected" domain="[('state', '=', 'rejected')]"/>
+                <separator/>
+                <filter string="Public Submissions" name="public_submissions" domain="[('submitted_from_public', '=', True)]"/>
+                <group expand="0" string="Group By">
+                    <filter string="State" name="group_by_state" domain="[]" context="{'group_by': 'state'}"/>
+                    <filter string="Department" name="group_by_department" domain="[]" context="{'group_by': 'department_id'}"/>
+                    <filter string="Submission Month" name="group_by_month" domain="[]" context="{'group_by': 'create_date:month'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Main Action Window -->
+    <record id="action_joining_form" model="ir.actions.act_window">
+        <field name="name">Joining Forms</field>
+        <field name="res_model">joining.form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first joining form
+            </p>
+            <p>
+                This is where you can manage all joining form submissions from candidates.
+            </p>
+        </field>
+    </record>
+</odoo>

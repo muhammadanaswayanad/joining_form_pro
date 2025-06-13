@@ -1,0 +1,32 @@
+/* Public Joining Form Styling */
+.o_mark_required .form-label:not(.form-check-label)::after {
+    content: " *";
+    color: #dc3545;
+}
+
+#wrapwrap .card-header.bg-primary {
+    background-color: #7C7BAD !important;
+}
+
+#wrapwrap .btn-primary {
+    background-color: #7C7BAD;
+    border-color: #7C7BAD;
+}
+
+#wrapwrap .btn-primary:hover {
+    background-color: #6c6a9d;
+    border-color: #6c6a9d;
+}
+
+/* Override default form styles */
+.form-control:focus {
+    border-color: #7C7BAD;
+    box-shadow: 0 0 0 0.2rem rgba(124, 123, 173, 0.25);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .col-md-4, .col-md-6 {
+        margin-bottom: 15px;
+    }
+}

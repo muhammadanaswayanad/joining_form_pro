@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Menu Items -->
+    <menuitem id="menu_joining_form_root" 
+              name="Joining Forms" 
+              web_icon="joining_form_pro,static/src/img/icon.png" 
+              sequence="80"/>
+              
+    <menuitem id="menu_joining_form_main" 
+              name="Joining Forms"
+              parent="menu_joining_form_root"
+              sequence="1"/>
+              
+    <menuitem id="menu_joining_form_submissions" 
+              name="Form Submissions"
+              parent="menu_joining_form_main"
+              action="action_joining_form"
+              sequence="1"/>
+</odoo>
