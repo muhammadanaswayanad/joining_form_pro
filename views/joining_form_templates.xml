@@ -28,6 +28,18 @@
                                     }
                                 }
                                 
+                                function previewImage(input) {
+                                    if (input.files && input.files[0]) {
+                                        var reader = new FileReader();
+                                        
+                                        reader.onload = function(e) {
+                                            document.getElementById('photoPreview').src = e.target.result;
+                                        }
+                                        
+                                        reader.readAsDataURL(input.files[0]);
+                                    }
+                                }
+                                
                                 document.addEventListener('DOMContentLoaded', function() {
                                     toggleSocialMediaUrls();
                                 });
@@ -40,15 +52,32 @@
                                     <h3 class="card-title mb-0">Personal Information</h3>
                                 </div>
                                 <div class="card-body">
+                                    <div class="row mb-4">
+                                        <div class="col-md-8">
+                                            <div class="row mb-3">
+                                                <div class="col-md-6">
+                                                    <label class="form-label" for="name">Full Name <span class="text-danger">*</span></label>
+                                                    <input type="text" name="name" id="name" class="form-control" required="required"/>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label class="form-label" for="personal_number">Personal Number <span class="text-danger">*</span></label>
+                                                    <input type="tel" name="personal_number" id="personal_number" class="form-control" required="required"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 text-center">
+                                            <label class="form-label d-block">Your Photo</label>
+                                            <div class="mx-auto position-relative" style="width: 128px; height: 128px; overflow: hidden; border: 1px dashed #ccc; border-radius: 50%; background-color: #f8f9fa;">
+                                                <img id="photoPreview" src="/joining_form_pro/static/src/img/avatar.png" alt="Preview" style="width: 100%; height: 100%; object-fit: cover;"/>
+                                                <div class="position-absolute" style="top: 0; left: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
+                                                    <input type="file" name="photo" id="photo" style="opacity: 0; position: absolute; width: 100%; height: 100%; cursor: pointer;" accept="image/*" onchange="previewImage(this);"/>
+                                                    <i class="fa fa-camera" style="color: #6c757d; font-size: 24px; pointer-events: none;"></i>
+                                                </div>
+                                            </div>
+                                            <small class="form-text text-muted mt-1">Click to upload</small>
+                                        </div>
+                                    </div>
                                     <div class="row mb-3">
-                                        <div class="col-md-4">
-                                            <label class="form-label" for="name">Full Name <span class="text-danger">*</span></label>
-                                            <input type="text" name="name" id="name" class="form-control" required="required"/>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <label class="form-label" for="personal_number">Personal Number <span class="text-danger">*</span></label>
-                                            <input type="tel" name="personal_number" id="personal_number" class="form-control" required="required"/>
-                                        </div>
                                         <div class="col-md-4">
                                             <label class="form-label" for="branch_id">Branch</label>
                                             <select name="branch_id" id="branch_id" class="form-select">
@@ -453,15 +482,11 @@
                                 </div>
                                 <div class="card-body">
                                     <div class="row mb-3">
-                                        <div class="col-md-4">
+                                        <div class="col-md-6">
                                             <label class="form-label" for="resume">Upload Your Resume</label>
                                             <input type="file" name="resume" id="resume" class="form-control" accept="application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"/>
                                         </div>
-                                        <div class="col-md-4">
-                                            <label class="form-label" for="photo">Photo</label>
-                                            <input type="file" name="photo" id="photo" class="form-control" accept="image/*"/>
-                                        </div>
-                                        <div class="col-md-4">
+                                        <div class="col-md-6">
                                             <label class="form-label" for="aadhaar_card">Upload Aadhaar Card</label>
                                             <input type="file" name="aadhaar_card" id="aadhaar_card" class="form-control" accept="image/*,application/pdf"/>
                                         </div>
